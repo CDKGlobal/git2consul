@@ -1,3 +1,7 @@
+v0.12.14 (UNRELEASED)
+* Use --config-key as the option flag. --config_key still exists for backwards compatibility [GH-141]
+* Only ignore embedded JSON/YAML/properties file extensions [GH-123]
+
 v0.12.13
 * `ignore_repo_name` option to ignore repository name as part of the KV path [GH-113]
 * Improve logging on ref changes to include repository name. [GH-111]

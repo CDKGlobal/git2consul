@@ -137,7 +137,7 @@ The above example also logs to stdout as well as to file.  Logging is handled vi
 
 git2consul uses the name and branches of configured repos to namespace the created KVs.  The goal is to allow multiple teams to use the same Consul agents and KV store to migrate configuration data around a network without needing to worry about data conflicts.  In the above example, a settings file stored at `foo_service/settings.json` in the `development` branch of the repo `vp_config` would be persisted in Consul as `vp_config/development/foo_service/settings.json`.
 
-If you are using a more [Twelve-Factor](http://12factor.net/) approach, where you wish to configure your applications via environment variables, you would store these settings as files in Git whose name is the key and whose body is the value.  For example, we could create the file `foo_service/log_level` with the body `trace` in the `development` branch of the `foo_service` repo and git2consul will create the KV `vp_config/development/foo_service/log_level` with the value `trace`.
+If you are using a more [Twelve-Factor](http://12factor.net/) approach, where you wish to configure your applications via environment variables, you would store these settings as files in Git whose name is the key and whose body is the value.  For example, we could create the file `foo_service/log_level` with the body `trace` in the `development` branch of the `vp_config` repo and git2consul will create the KV `vp_config/development/foo_service/log_level` with the value `trace`.
 
 As changes are detected in the specified Git repos, git2consul determines which files have been added, updated, or deleted and replicates those changes to the KV.  Because only changed branches and files are analyzed, git2consul should have a very slim profile on hosting systems.
 
@@ -148,6 +148,9 @@ There are environment variable equivalents for the parameters that git2consul ac
 * `CONSUL_ENDPOINT` maps to `-e` or `--endpoint`
 * `CONSUL_PORT` maps to `-p` or `--port`
 * `CONSUL_SECURE` maps to `-s` or `--secure`
+* `CONSUL_CERT` maps to `--cert`
+* `CONSUL_KEY` maps to `--key`
+* `CONSUL_CA` maps to `--ca`
 * `TOKEN` maps to `-t` or `--token`
 
 
@@ -155,7 +158,7 @@ There are environment variable equivalents for the parameters that git2consul ac
 
 ##### Alternate Config Locations
 
-By default, git2consul looks for its configuration at the Consul Key `git2consul/config`.  You can override this with a `-c` of `--config_key` command line switch, like so:
+By default, git2consul looks for its configuration at the Consul Key `git2consul/config`.  You can override this with a `-c` of `--config-key` command line switch, like so:
 
 ```sh
 git2consul -c git2consul/alternative_config

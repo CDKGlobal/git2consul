@@ -1,5 +1,6 @@
 var fs = require('fs');
 var config_seeder = require('../lib/config_seeder.js')
+var logger = require('../lib/logging.js');
 
 /**
  * First, check if there is a command line override for the consul endpoint.
@@ -9,6 +10,9 @@ var config_seeder = require('../lib/config_seeder.js')
 global.endpoint = process.env.CONSUL_ENDPOINT || "127.0.0.1";
 global.port = process.env.CONSUL_PORT || 8500;
 global.secure = process.env.CONSUL_SECURE || false;
+global.cert_filename = process.env.CONSUL_CERT || '';
+global.key_filename = process.env.CONSUL_KEY || '';
+global.ca_filename = process.env.CONSUL_CA || '';
 global.token = process.env.TOKEN || null;
 global.config_key = "git2consul/config";
 
@@ -31,9 +35,9 @@ for (var i=2; i<process.argv.length; ++i) {
       global.port = process.argv[i+1];
     }
 
-    if(process.argv[i] === '-c' || process.argv[i] === '--config_key') {
+    if(process.argv[i] === '-c' || process.argv[i] === '--config-key' || process.argv[i] === '--config_key') {
       if(i+1 >= process.argv.length) {
-        logger.error("No consul Key name provided with --config_key option");
+        logger.error("No consul Key name provided with --config-key option");
         process.exit(3);
       }
       global.config_key = process.argv[i+1];
